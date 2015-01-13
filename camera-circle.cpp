@@ -18,20 +18,21 @@ int main(int argc, char **argv)
 	int c,i;
 	float *p;
 
-	double width = 320, height = 240;
 
-	// カメラに対するキャプチャ構造体を作成。
-	if (argc == 1 || (argc == 2 && strlen(argv[1]) == 1 && isdigit(argv[1][0])))
-		capture = cvCreateCameraCapture(argc == 2 ? argv[1][0] - '0' : 0);
+	//カメラの設定
+	capture = cvCreateCameraCapture(0);
 
-	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, width);
-	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, height);
+	frame = cvQueryFrame(capture);
+	//Captureの設定:フレームの長さを設定
+	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, frame->width/2);
+	cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, frame->height/2);
 
 	cvNamedWindow("Capture", CV_WINDOW_AUTOSIZE);
 
 	while(1)
 	{
 		frame = cvQueryFrame(capture);
+
 		CvSize sizeOfImage = cvGetSize(frame);
 		gray_img = cvCreateImage(sizeOfImage,IPL_DEPTH_8U,1);
 
